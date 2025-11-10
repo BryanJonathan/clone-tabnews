@@ -1,6 +1,6 @@
 import database from "infra/database.js";
 
-async function status (req, res) {
+async function status(req, res) {
   const postgresVersion = await database.query(`SHOW server_version;`);
 
   const maxConnections = await database.query(`SHOW max_connections;`);
@@ -11,9 +11,9 @@ async function status (req, res) {
     text: "SELECT count(*)::int FROM pg_stat_activity WHERE datname = $1;",
     values: [databaseName],
   });
-  
 
-  const updatedAt = new Date().toISOString(); 
+
+  const updatedAt = new Date().toISOString();
 
   res.status(200).json({
     updated_at: updatedAt,
@@ -24,7 +24,7 @@ async function status (req, res) {
         opened_connections: activeConnections.rows[0].count
       }
     }
-  }); 
+  });
 }
 
 export default status;
